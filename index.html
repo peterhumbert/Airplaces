@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="exif.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <img style="display:none;" id="img2" />
+
+  <br/>
+  <input id="test" type="file" onchange="readURL(this);">
+  <button onclick="getExif()"></button>
+    <pre id="allMetaDataSpan"></pre>
+</body>
+
+<script type="text/javascript" src="imagemanip.js"></script>
+</html>
