@@ -1,5 +1,4 @@
 (function() {
-
     var debug = false;
 
     var root = this;
@@ -380,7 +379,7 @@
 
         if (img.src) {
             if (/^data\:/i.test(img.src)) { // Data URI
-              console.log(img.src);
+              //console.log(img.src);
                 var arrayBuffer = base64ToArrayBuffer(img.src);
                 handleBinaryFile(arrayBuffer);
 
@@ -393,7 +392,7 @@
                     fileReader.readAsArrayBuffer(blob);
                 });
             } else {
-              console.log(img.src);
+              //console.log(img.src);
                 var http = new XMLHttpRequest();
                 http.onload = function() {
                     if (this.status == 200 || this.status === 0) {
@@ -930,8 +929,8 @@
     }
 
     EXIF.getData = function(img, callback) {
-        if ((self.Image && img instanceof self.Image)
-            || (self.HTMLImageElement && img instanceof self.HTMLImageElement)
+        if (((self.Image && img instanceof self.Image)
+            || (self.HTMLImageElement && img instanceof self.HTMLImageElement))
             && !img.complete)
             return false;
 
