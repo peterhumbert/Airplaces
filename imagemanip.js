@@ -1,18 +1,20 @@
 function getExif() {
     var imgTag = $('#img2')[0];
     imgTag.exifdata = null; // needed to prevent caching of exif data
+
     EXIF.getData(imgTag, function() {
         var latref = EXIF.getTag(this, "GPSLatitudeRef");
         var lat = EXIF.getTag(this, "GPSLatitude");
         var lonref = EXIF.getTag(this, "GPSLongitudeRef");
         var lon = EXIF.getTag(this, "GPSLongitude");
         var datetime = EXIF.getTag(this, "DateTime");
-        var allMetaDataSpan = document.getElementById("allMetaDataSpan");
+        var allMetaDataSpan = $('#allMetaDataSpan')[0];
         if (lat && lon) {
           console.log('What about airplane mode?');
-          allMetaDataSpan.innerHTML = `${lat} ${latref} ${lon} ${lonref}`;
+          allMetaDataSpan.innerHTML = `${lat} ${latref} ${lon} ${lonref} \n${datetime}`;
           window.alert('What about airplane mode?');
         } else {
+          console.log(datetime);
           allMetaDataSpan.innerHTML = `${datetime}`;
         }
     });
@@ -25,8 +27,7 @@ function readURL(input) {
     var reader = new FileReader();
 
     reader.onload = function (e) {
-        $('#img2')
-            .attr('src', e.target.result)
+        $('#img2').attr('src', e.target.result);
     };
 
     reader.readAsDataURL(input.files[0]);
