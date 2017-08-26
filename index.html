@@ -4,21 +4,24 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://gitcdn.link/repo/Chalarangelo/mini.css/master/dist/mini-default.min.css">
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="exif.js"></script>
+  <script type="text/javascript" src="imagemanip.js"></script>
   <title>Document</title>
 </head>
 <body>
-  <img style="display:none;" id="img2" />
+  <img style="max-width:50%; max-height:40%; display:block; margin:auto" id="img2" />
 
   <br/>
-  <input id="test" type="file" onchange="readURL(this);">
-  <button onclick="getExif()"></button>
-    <pre id="allMetaDataSpan"></pre>
+  <input type="file" id="file-input" onchange="readURL(this);">
+  <label for="file-input" class="button">Upload file...</label>
+  <!--
+  <input id="test" type="file" onchange="readURL(this);"> -->
+  <button onclick="getExif();"></button>
+    <pre id="allMetaDataSpan">sfds</pre>
 </body>
-
-<script type="text/javascript" src="imagemanip.js"></script>
 </html>
