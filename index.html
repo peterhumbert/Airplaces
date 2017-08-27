@@ -13,15 +13,32 @@
   <script type="text/javascript" src="imagemanip.js"></script>
   <title>Document</title>
 </head>
-<body>
+<body style="background-color:white;">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-md-3 col-lg-2">
+        <a href="../"><img src="Logo3.png" alt="Airplaces"></a>
+      </div>
+      <div class="col-sm-12 col-md-5 col-lg-7">
+      </div>
+      <div class="col-sm-12 col-md-4 col-lg-3">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+      </div>
+    </div>
+  </div>
   <img style="max-width:50%; max-height:40%; display:block; margin:auto" id="img2" />
 
   <br/>
-  <input type="file" id="file-input" onchange="readURL(this);">
+  <input type="file" id="file-input" accept="image/*" onchange="readURL(this);">
   <label for="file-input" class="button">Upload file...</label>
   <!--
   <input id="test" type="file" onchange="readURL(this);"> -->
-  <button onclick="getExif();"></button>
+  <button onclick="getExif();">Read EXIF</button>
     <pre id="allMetaDataSpan">sfds</pre>
 </body>
+
+<script src="mapping.js"></script>
 </html>
