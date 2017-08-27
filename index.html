@@ -11,7 +11,15 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="exif.js"></script>
   <script type="text/javascript" src="imagemanip.js"></script>
-  <title>Document</title>
+  <style>
+   #map {
+     width: 100%;
+     height: 400px;
+     background-color: grey;
+   }
+  </style>
+
+  <title>Airplaces</title>
 </head>
 <body style="background-color:white;">
   <div class="container">
@@ -29,6 +37,7 @@
       </div>
     </div>
   </div>
+  <div id="map"></div>
   <img style="max-width:50%; max-height:40%; display:block; margin:auto" id="img2" />
 
   <br/>
@@ -37,8 +46,12 @@
   <!--
   <input id="test" type="file" onchange="readURL(this);"> -->
   <button onclick="getExif();">Read EXIF</button>
-    <pre id="allMetaDataSpan">sfds</pre>
+  <pre id="allMetaDataSpan">sfds</pre>
+
+  <script src="mapping.js"></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyoOJWDWzlYK-KtGrkUPAav8y5-y9Akgs&callback=initMap">
+      </script>
 </body>
 
-<script src="mapping.js"></script>
 </html>
