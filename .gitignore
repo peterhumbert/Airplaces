@@ -16,3 +16,5 @@ Icons8-Windows-8-Transport-Airplane-Mode-On.ico
 Pitch Deck.pptx
 
 *.cfg
+
+docker/*
