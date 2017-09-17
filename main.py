@@ -15,10 +15,10 @@ response = requests.get(fxmlUrl + "FlightInfoStatus", params=payload, auth=(user
 if response.status_code == 200:
 	decodedResponse = response.json()
 	for flight in decodedResponse['FlightInfoStatusResult']['flights']:
-		print("{} ({})\t{} {} ({})\t{}\t{}".format(flight['ident'], flight['aircrafttype'],
+		print("{} ({})\t{} {} ({})\t{}\t{}\n{}\n".format(flight['ident'], flight['aircrafttype'],
                                                            flight['origin']['airport_name'], flight['origin']['code'],
                                                            flight['destination']['code'], flight['actual_departure_time'],
-                                                           flight['status']))
+                                                           flight['status'],flight['faFlightID']))
 else:
 	print("There was an error retrieving the data from the server.")
 
