@@ -9,9 +9,16 @@ function getExif() {
         var lon = EXIF.getTag(this, "GPSLongitude");
         var datetime = EXIF.getTag(this, "DateTime");
         var allMetaDataSpan = $('#allMetaDataSpan')[0];
+
+        var datetimeFormatted = datetime.substring(0,4) + datetime.substring(5,7)
+          + datetime.substring(8,10) + datetime.substring(11,13)
+          + datetime.substring(14,16) + datetime.substring(17,19);
+
+        // AJAX call
         if (lat && lon) {
           console.log('What about airplane mode?');
-          allMetaDataSpan.innerHTML = `${lat} ${latref} ${lon} ${lonref} \n${datetime}`;
+          allMetaDataSpan.innerHTML =
+            `${lat} ${latref} ${lon} ${lonref} \n${datetimeFormatted}`;
           window.alert('What about airplane mode?');
         } else {
           console.log(datetime);
