@@ -37,6 +37,9 @@ def locationByFlightNo(airline, flightno, timestamp):
 				# considering an en-route flight
 			elif flight['status'] == 'Arrived':
 				# consider an arrived flight
+				arrivalTime = convertFATimestamp(flight['actual_arrival_time'])
+				departTime = convertFATimestamp(flight['actual_departure_time'])
+
 			output = output + "{} ({})\t{} {} ({})\t{}\t{}\n{}\n".format(flight['ident'], flight['aircrafttype'],
 	                                                           flight['origin']['airport_name'], flight['origin']['code'],
 	                                                           flight['destination']['code'], flight['actual_departure_time'],
@@ -63,12 +66,22 @@ def interpolatePosition(specifieddt, dt1, dt2, pos1, pos2):
 
 # convert a string of formay YYYYMMDDhhmmss to a datetime object
 def convertAPITimestamp(timestamp):
-	return datetime.datetime(int(date[0:4]),int(date[4:6]),int(date[6:8]),
-		int(date[8:10]),int(date[10:12]),int(date[12:14]))
+	return datetime(int(timestamp[0:4]), int(timestamp[4:6]),
+		int(timestamp[6:8]), int(timestamp[8:10]), int(timestamp[10:12]),
+		int(timestamp[12:14]))
 
 # convert a FlightAware timestamp to a datetime object
 def convertFATimestamp(timestamp):
-	# TODO
+	date = timestamp['date']
+	time = timestamp['time']
+	hour = int(time[0:2])
+	minute = int(time[3:5])
+
+	if time[5:] == 'pm' or time[5:] == 'pm':
+		hour += 12
+
+	return datetime(int(date[6:10]), int(date[0:2]), int(date[3:5]),
+		hour, minute)
 
 # run the app
 if __name__ == "__main__":
