@@ -48,7 +48,8 @@ def locationByFlightNo(airline, flightno, timestamp):
 			elif flight['status'] == 'Arrived':
 				# consider an arrived flight
 				arriveTime = convertFATimestamp(flight['actual_arrival_time'])
-				arriveTime = tzConversionFactor(flight['actual_departure_time'],
+				arriveTime += tzConversionFactor(
+					flight['actual_departure_time'],
 					flight['actual_arrival_time'])
 				departTime = convertFATimestamp(flight['actual_departure_time'])
 
@@ -113,9 +114,12 @@ def convertFATimestamp(timestamp):
 		hour, minute)
 
 # convert arriveTime to departTime's timezone
-def tzConversionFactor(departTime, arriveTime):
-	# TODO
-
+def tzConversionFactor(departTimestamp, arriveTimestamp):
+	departUTCoffset = (departTimestamp['localtime']
+		- departTimestamp['epoch'])/3600
+	arriveUTCoffset = (arriveTimestamp['localtime']
+		- arriveTimestamp['epoch'])/3600
+	return timedelta(hours=departUTCoffset-arriveUTCoffset)
 
 # run the app
 if __name__ == "__main__":
