@@ -23,30 +23,59 @@ def flightDataTest(airline, flightno):
 @app.route("/<airline>/<flightno>/<timestamp>")
 def locationByFlightNo(airline, flightno, timestamp):
 	# convert inputted date to datetime
-	photoDate = convertAPITimestamp(timestamp)
+	photoTime = convertAPITimestamp(timestamp)
 
 	# lookup the requested flight
 	payload = {'ident':airline + flightno, 'howMany':'30'}
-	response = requests.get(fxmlUrl + "FlightInfoStatus", params=payload, auth=(username, apiKey))
+	response = requests.get(fxmlUrl + "FlightInfoStatus", params=payload,
+		auth=(username, apiKey))
 
 	output = ""
 	if response.status_code == 200:
 		decodedResponse = response.json()
-		for flight in decodedResponse['FlightInfoStatusResult']['flights']:
+		i = 0
+		matchFAID = None
+		while (i < len(decodedResponse['FlightInfoStatusResult']['flights']))
+			and (matchFAID == None):
+			flight = decodedResponse['FlightInfoStatusResult']['flights'][i]
+
 			if flight['status'] == 'En':
 				# considering an en-route flight
-			elif flight['status'] == 'Arrived':
-				# consider an arrived flight
-				arrivalTime = convertFATimestamp(flight['actual_arrival_time'])
 				departTime = convertFATimestamp(flight['actual_departure_time'])
 
-			output = output + "{} ({})\t{} {} ({})\t{}\t{}\n{}\n".format(flight['ident'], flight['aircrafttype'],
-	                                                           flight['origin']['airport_name'], flight['origin']['code'],
-	                                                           flight['destination']['code'], flight['actual_departure_time'],
-	                                                           flight['status'],flight['faFlightID'])
+				if (photoTime > departTime):
+					matchFAID = flight['faFlightID']
+			elif flight['status'] == 'Arrived':
+				# consider an arrived flight
+				arriveTime = convertFATimestamp(flight['actual_arrival_time'])
+				arriveTime = tzConversionFactor(flight['actual_departure_time'],
+					flight['actual_arrival_time'])
+				departTime = convertFATimestamp(flight['actual_departure_time'])
+
+				# 	check if photo was taken while i-th flight was airborne
+				# assumption: flight numbers associated with two routes won't
+				# cause overlap between the ranges of airborne times for their
+				# respective timezones because these flight numbers are
+				# expected to only cover A-to-B and B-to-C routes. They
+				# therefore use different timezones.
+				if (photoTime > departTime) and (photoTime < arriveTime):
+					matchFAID = flight['faFlightID']
+
+			# output = output + "{} ({})\t{} {} ({})\t{}\t{}\n{}\n".format(flight['ident'], flight['aircrafttype'],
+	        #                                                    flight['origin']['airport_name'], flight['origin']['code'],
+	        #                                                    flight['destination']['code'], flight['actual_departure_time'],
+	        #                                                    flight['status'],flight['faFlightID'])
+			i += 1
+
+		if (not matchFAID == None):
+			# the flight was found
+
+		else:
+			# no matching flight was found
+			return json.dumps({'APAPI_status':-2})
 		return output
 	else:
-		return "There was an error retrieving the data from the server."
+		return json.dumps({'APAPI_status':-1})
 
 # define future app endpoint
 @app.route("/<origin>/<destination>/<date>")
@@ -82,6 +111,11 @@ def convertFATimestamp(timestamp):
 
 	return datetime(int(date[6:10]), int(date[0:2]), int(date[3:5]),
 		hour, minute)
+
+# convert arriveTime to departTime's timezone
+def tzConversionFactor(departTime, arriveTime):
+	# TODO
+
 
 # run the app
 if __name__ == "__main__":
