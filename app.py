@@ -150,8 +150,9 @@ def locationByFlightNo(airline, flightno, timestamp):
 # for a specified datetime, interpolate the positions (lat,long) associated with
 # the two immediately adjacent datetimes
 def interpolatePosition(specifieddt, dt1, dt2, pos1, pos2):
-	# TODO
-	return 'NOT YET IMPLEMENTED'
+	multiplier = (specifieddt-dt1)/(dt2-dt1)
+	return {'latitude':pos1['latitude'] + multiplier*pos2['latitude'],
+		'longitude':pos1['longitude'] + multiplier*pos2['longitude']}
 
 # convert a string of formay YYYYMMDDhhmmss to a datetime object
 def convertAPITimestamp(timestamp):
