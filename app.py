@@ -3,7 +3,7 @@ from flask import Flask
 import requests
 import configparser
 import json
-from datetime import datetime, tzinfo
+from datetime import datetime, tzinfo, timedelta
 
 app = Flask(__name__)
 
@@ -13,8 +13,6 @@ config.read('airplaces.cfg')
 apiKey = config.get('credentials','fa_api_key')
 username = config.get('credentials','fa_username')
 fxmlUrl = "https://flightxml.flightaware.com/json/FlightXML3/"
-
-utc = UTC()
 
 class UTC(tzinfo):
     """UTC"""
@@ -27,6 +25,8 @@ class UTC(tzinfo):
 
     def dst(self, dt):
         return timedelta(0)
+
+utc = UTC()
 
 # define app endpoint for testing
 @app.route("/<airline>/<flightno>")
@@ -49,8 +49,8 @@ def locationByFlightNo(airline, flightno, timestamp):
 		decodedResponse = response.json()
 		i = 0
 		matchFAID = None
-		while (i < len(decodedResponse['FlightInfoStatusResult']['flights']))
-			and (matchFAID == None):
+		while (i < len(decodedResponse['FlightInfoStatusResult']['flights'])
+			and matchFAID == None):
 			flight = decodedResponse['FlightInfoStatusResult']['flights'][i]
 
 			if flight['status'] == 'En':
@@ -69,6 +69,10 @@ def locationByFlightNo(airline, flightno, timestamp):
 					flight['actual_arrival_time'])  # convert arriveTime to
 													# departure timezone
 				departTime = convertFATimestamp(flight['actual_departure_time'])
+				print(departTime)
+				print(arriveTime)
+				print(photoTime)
+				print('')
 
 				# check if photo was taken while i-th flight was airborne
 				# assumption: flight numbers associated with two routes won't
@@ -102,12 +106,12 @@ def locationByFlightNo(airline, flightno, timestamp):
 				tAfter = None	# for timestamp immediately After photoTime
 				posBefore = None
 				posAfter = None
-				while (j < len(decodedResponse['GetFlightTrackResult']['tracks'])) - 1
-					and (tBefore != None) and (tAfter != None):
+				while (j < len(decodedResponse['GetFlightTrackResult']['tracks']) - 1
+					and (tBefore != None) and (tAfter != None)):
 					track1 = decodedResponse['GetFlightTrackResult']['tracks'][j]
 					track2 = decodedResponse['GetFlightTrackResult']['tracks'][j+1]
-					if (datetime.fromtimestamp(track1['timestamp'],utc) < photoTime) and
-						(datetime.fromtimestamp(track2['timestamp'],utc) > photoTime):
+					if (datetime.fromtimestamp(track1['timestamp'],utc) < photoTime and
+						datetime.fromtimestamp(track2['timestamp'],utc) > photoTime):
 						# photo was taken between the two current track entries
 						tBefore = datetime.fromtimestamp(track1['timestamp'],utc)
 						tAfter = datetime.fromtimestamp(track2['timestamp'],utc)
@@ -167,7 +171,7 @@ def convertFATimestamp(timestamp):
 	hour = int(time[0:2])
 	minute = int(time[3:5])
 
-	if time[5:] == 'pm' or time[5:] == 'pm':
+	if (time[5:] == 'PM' or time[5:] == 'pm') and hour < 12:
 		hour += 12
 
 	return datetime(int(date[6:10]), int(date[0:2]), int(date[3:5]),

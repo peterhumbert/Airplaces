@@ -3,6 +3,8 @@ services:
   web:
     # replace username/repo:tag with your name and image details
     image: phumbe/airplaces:latest
+    environment:
+      - PYTHONUNBUFFERED=0
     deploy:
       replicas: 1
       resources:
