@@ -4,9 +4,6 @@ import requests
 import configparser
 import json
 from datetime import datetime, tzinfo, timedelta
-#import pytz
-
-#utc=pytz.UTC
 
 app = Flask(__name__)
 
@@ -65,7 +62,7 @@ def locationByFlightNo(airline, flightno, timestamp):
 						# flight found!
 						matchFAID = flight['faFlightID']
 						photoTime -= getUTCoffset(flight['actual_departure_time'])
-				elif flight['status'] == 'Arrived':
+				elif flight['status'] == 'Arrived' or flight['status'] == 'Arrived / Gate Arrival':
 					# consider an arrived flight
 					arriveTime = convertFATimestamp(flight['actual_arrival_time'])
 					arriveTime += tzConversionFactor(
