@@ -54,7 +54,7 @@ def locationByFlightNo(airline, flightno, timestamp):
 				and matchFAID == None):
 				flight = decodedResponse['FlightInfoStatusResult']['flights'][i]
 
-				if flight['status'] == 'En':
+				if 'En' in flight['status']:
 					# considering an en-route flight
 					departTime = convertFATimestamp(flight['actual_departure_time'])
 
@@ -62,7 +62,7 @@ def locationByFlightNo(airline, flightno, timestamp):
 						# flight found!
 						matchFAID = flight['faFlightID']
 						photoTime -= getUTCoffset(flight['actual_departure_time'])
-				elif flight['status'] == 'Arrived' or flight['status'] == 'Arrived / Gate Arrival':
+				elif 'Arrived' in flight['status']:
 					# consider an arrived flight
 					arriveTime = convertFATimestamp(flight['actual_arrival_time'])
 					arriveTime += tzConversionFactor(
