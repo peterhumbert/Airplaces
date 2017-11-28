@@ -58,4 +58,7 @@ function loadSampleImage() {
 $(document).ready(function() {
   // make the image only as tall as the map
   $('#img2').attr('style',$('#img2').attr('style') + 'max-height:' + $('#map')[0].clientHeight + 'px;');
+
+  // setup the airline dropdown
+  $('#airlines').dropdown();
 })
