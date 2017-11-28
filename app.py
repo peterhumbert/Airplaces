@@ -4,8 +4,11 @@ import requests
 import configparser
 import json
 from datetime import datetime, tzinfo, timedelta
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 # get API credentials
 config = configparser.RawConfigParser()
