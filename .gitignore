@@ -18,3 +18,6 @@ Pitch Deck.pptx
 *.cfg
 
 docker/*
+node_modules/*
+semantic/dist/*
+semantic/tasks/*
