@@ -1,5 +1,7 @@
 function getExif() {
     var imgTag = $('#img2')[0];
+    var airline = "UAL"; // TODO
+    var flightno = "21"; // TODO
     imgTag.exifdata = null; // needed to prevent caching of exif data
 
     EXIF.getData(imgTag, function() {
@@ -15,15 +17,11 @@ function getExif() {
           + datetime.substring(14,16) + datetime.substring(17,19);
 
         // AJAX call
-        if (lat && lon) {
-          console.log('What about airplane mode?');
-          allMetaDataSpan.innerHTML =
-            `${lat} ${latref} ${lon} ${lonref} \n${datetimeFormatted}`;
-          window.alert('What about airplane mode?');
-        } else {
-          console.log(datetime);
-          allMetaDataSpan.innerHTML = `${datetime}`;
-        }
+        $.ajax({url: "http://localhost:4000/"+ airline + "/" + flightno + "/" +
+          datetimeFormatted, success: function(result){
+            console.log($("#allMetaDataSpan"));
+            $("#allMetaDataSpan")[0].innerHTML = result;
+        }});
     });
 }
 
